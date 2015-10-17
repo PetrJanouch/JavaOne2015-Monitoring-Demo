@@ -1,0 +1,74 @@
+path.slice {
+    stroke-width: 2px;
+}
+
+polyline {
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
+}
+
+body {
+    font-size: 12px !important;
+}
+
+.tab, .chart1, .chart2 {
+    height: 300px;
+}
+
+#tab2 svg {
+    width: 900px;
+    height: 500px;
+}
+
+body {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.bar {
+    fill: steelblue;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.nodeContainer {
+    width: 32%;
+    display: inline-block;
+    margin: 10px;
+}
+
+#nodes {
+    display: inline-block;
+    width: 100%;
+}
+
+.serverLabel {
+    margin-top: 25px;
+    margin-left: 45%;
+    font: 18px !important;
+}
+
+#legend ul li {
+    display: inline;
+}
+
+#legend {
+    background-color: transparent;
+}
+
+#legend .line {
+    color: #000000;
+}
+
+
+

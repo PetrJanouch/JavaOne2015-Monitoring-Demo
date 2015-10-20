@@ -1,7 +1,7 @@
 package org.jersey.example.monitoring;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.glassfish.jersey.server.monitoring.MonitoringStatistics;
-import org.glassfish.jersey.server.monitoring.ResourceStatistics;
 
 @Path("monitoring")
 public class MonitoringResource {
@@ -24,14 +23,18 @@ public class MonitoringResource {
     @GET
     public MonitoringData get() {
         MonitoringData monitoringData = new MonitoringData();
-        Map<String, Long> rr = new HashMap<>();
+        Map<String, Long> rr = statistics.get()
+                .getResourceClassStatistics()
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        e -> e.getKey().getSimpleName(),
+                        e -> e.getValue()
+                                .getRequestExecutionStatistics()
+                                .getTimeWindowStatistics()
+                                .get(1000L)
+                                .getRequestCount()));
         monitoringData.setRequestsPerResource(rr);
-        MonitoringStatistics monitoringStatistics = statistics.get();
-
-        Map<Class<?>, ResourceStatistics> resourceClassStatistics = monitoringStatistics.getResourceClassStatistics();
-        resourceClassStatistics.forEach((aClass, resourceStatistics) -> rr
-                .put(aClass.getSimpleName(), resourceStatistics.getRequestExecutionStatistics().getTimeWindowStatistics()
-                        .get(1000L).getRequestCount()));
         return monitoringData;
     }
 }

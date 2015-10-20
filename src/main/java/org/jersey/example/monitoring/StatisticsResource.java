@@ -43,14 +43,21 @@ public class StatisticsResource {
 
     private void broadcastStatistics() {
         List<URI> monitoringEndpoints = monitoringApp.getMonitoredApps();
-        List<MonitoringData> monitoringData = monitoringEndpoints.stream().map((endpointUri) -> {
-            Response response = client.target(endpointUri).path("monitoring").request().get();
+        List<MonitoringData> monitoringData = monitoringEndpoints
+                .stream()
+                .map((endpointUri) -> {
+            Response response = client.
+                    target(endpointUri)
+                    .path("monitoring").request()
+                    .get();
             MonitoringData data = response.readEntity(MonitoringData.class);
             data.setNode(endpointUri.getHost() + ":" + endpointUri.getPort());
             return data;
         }).collect(Collectors.toList());
 
-        OutboundEvent event = new OutboundEvent.Builder().mediaType(MediaType.APPLICATION_JSON_TYPE).data(monitoringData).build();
+        OutboundEvent event = new OutboundEvent.Builder()
+                .mediaType(MediaType.APPLICATION_JSON_TYPE)
+                .data(monitoringData).build();
         broadcaster.broadcast(event);
     }
 }
